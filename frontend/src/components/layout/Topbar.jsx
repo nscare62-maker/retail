@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { Sparkles, Database, TrendingUp, Bell, CheckCircle2, AlertCircle, RefreshCw, LogOut } from 'lucide-react';
+import { Sparkles, UploadCloud, TrendingUp, Bell, CheckCircle2, AlertCircle, LogOut } from 'lucide-react';
 import { apiService } from '../../services/api';
 
 const routeNames = {
@@ -16,11 +16,10 @@ const routeNames = {
   '/settings': 'Application Settings & Preferences',
 };
 
-export default function Topbar({ onSampleLoaded, user, onLogout }) {
+export default function Topbar({ user, onLogout }) {
   const navigate = useNavigate();
   const location = useLocation();
   const [backendStatus, setBackendStatus] = useState('checking'); // 'healthy', 'offline', 'checking'
-  const [sampleLoading, setSampleLoading] = useState(false);
 
   const checkHealth = async () => {
     try {
@@ -36,19 +35,6 @@ export default function Topbar({ onSampleLoaded, user, onLogout }) {
     const interval = setInterval(checkHealth, 30000);
     return () => clearInterval(interval);
   }, []);
-
-  const handleLoadSample = async () => {
-    try {
-      setSampleLoading(true);
-      await apiService.loadSampleDataset();
-      if (onSampleLoaded) onSampleLoaded();
-      navigate('/datasets');
-    } catch (err) {
-      alert(`Failed to load sample dataset: ${err.message}`);
-    } finally {
-      setSampleLoading(false);
-    }
-  };
 
   const currentTitle = routeNames[location.pathname] || 'Retail Demand Intelligence';
 
@@ -106,20 +92,15 @@ export default function Topbar({ onSampleLoaded, user, onLogout }) {
           <span>{backendStatus === 'healthy' ? 'API Online' : backendStatus === 'offline' ? 'API Offline' : 'Connecting...'}</span>
         </div>
 
-        {/* Load Sample Dataset Button */}
+        {/* Upload Dataset Quick Link */}
         <button
           className="btn-secondary"
-          onClick={handleLoadSample}
-          disabled={sampleLoading}
+          onClick={() => navigate('/datasets')}
           style={{ padding: '0.5rem 0.9rem', fontSize: '0.82rem' }}
-          title="Instantly generate & load 400-day multi-store synthetic retail dataset"
+          title="Upload custom retail sales CSV dataset"
         >
-          {sampleLoading ? (
-            <RefreshCw size={14} className="spinner" />
-          ) : (
-            <Database size={14} />
-          )}
-          <span>Load Sample Dataset</span>
+          <UploadCloud size={14} style={{ color: 'var(--primary-wine)' }} />
+          <span>Upload Dataset</span>
         </button>
 
         {/* Generate Forecast CTA */}

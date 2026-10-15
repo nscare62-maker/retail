@@ -146,7 +146,7 @@ export default function Training() {
         <PageHeader title="Temporal Fusion Transformer Training" subtitle="Train deep neural networks with multi-horizon quantile attention" />
         <EmptyState
           title="Dataset Required for Training"
-          description="Please upload or load a sample dataset before launching Temporal Fusion Transformer training."
+          description="Please upload your retail sales dataset on the Datasets page before launching Temporal Fusion Transformer training."
           actionLabel="Go to Datasets"
           onAction={() => navigate('/datasets')}
         />

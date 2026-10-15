@@ -195,6 +195,42 @@ export default function FileUpload({ onUpload, uploading, uploadProgress }) {
           </div>
         </form>
       )}
+      {/* Schema Requirement Helper */}
+      {!selectedFile && (
+        <div
+          style={{
+            marginTop: '1.25rem',
+            padding: '1rem',
+            borderRadius: 'var(--radius-md)',
+            backgroundColor: 'var(--pale-wine-bg)',
+            border: '1px solid var(--border-wine)',
+            fontSize: '0.82rem',
+          }}
+        >
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', fontWeight: 600, color: 'var(--dark-wine)', marginBottom: '0.5rem' }}>
+            <FileText size={15} style={{ color: 'var(--primary-wine)' }} />
+            <span>CSV Schema Requirements</span>
+          </div>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '0.75rem', color: 'var(--secondary-text)' }}>
+            <div>
+              <strong style={{ color: 'var(--primary-wine)' }}>Required Columns:</strong>
+              <ul style={{ paddingLeft: '1.2rem', margin: '0.25rem 0 0' }}>
+                <li><code style={{ color: 'var(--dark-wine)', fontWeight: 600 }}>date</code> (e.g. YYYY-MM-DD)</li>
+                <li><code style={{ color: 'var(--dark-wine)', fontWeight: 600 }}>product_id</code> (SKU / product ID)</li>
+                <li><code style={{ color: 'var(--dark-wine)', fontWeight: 600 }}>sales</code> (numerical demand volume)</li>
+              </ul>
+            </div>
+            <div>
+              <strong style={{ color: 'var(--dark-wine)' }}>Optional Features:</strong>
+              <ul style={{ paddingLeft: '1.2rem', margin: '0.25rem 0 0' }}>
+                <li><code style={{ color: 'var(--dark-wine)', fontWeight: 600 }}>store_id</code> (multi-store entity)</li>
+                <li><code style={{ color: 'var(--dark-wine)', fontWeight: 600 }}>category</code>, <code style={{ color: 'var(--dark-wine)', fontWeight: 600 }}>price</code>, <code style={{ color: 'var(--dark-wine)', fontWeight: 600 }}>discount</code></li>
+                <li><code style={{ color: 'var(--dark-wine)', fontWeight: 600 }}>promotion</code>, <code style={{ color: 'var(--dark-wine)', fontWeight: 600 }}>holiday</code> (0 or 1 flags)</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

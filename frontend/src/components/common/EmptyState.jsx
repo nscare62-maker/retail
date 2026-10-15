@@ -3,7 +3,7 @@ import { Database, Plus, RefreshCw } from 'lucide-react';
 
 export default function EmptyState({
   title = 'No Data Found',
-  description = 'No records are currently available. Get started by uploading or generating a sample dataset.',
+  description = 'No records are currently available. Get started by uploading your custom retail sales dataset.',
   icon: Icon = Database,
   actionLabel,
   onAction,

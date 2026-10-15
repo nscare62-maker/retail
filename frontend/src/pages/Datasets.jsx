@@ -85,17 +85,24 @@ export default function Datasets() {
     }
   };
 
-  const handleLoadSample = async () => {
-    try {
-      setUploading(true);
-      const res = await apiService.loadSampleDataset();
-      await fetchDatasets();
-      selectDataset(res.id);
-    } catch (err) {
-      alert(`Failed to load sample dataset: ${err.message}`);
-    } finally {
-      setUploading(false);
-    }
+  const downloadCsvTemplate = () => {
+    const csvContent =
+      'date,product_id,store_id,category,sales,price,discount,promotion,holiday\n' +
+      '2024-01-01,PROD-001,STORE-01,Apparel,45,29.99,0.0,0,0\n' +
+      '2024-01-02,PROD-001,STORE-01,Apparel,52,29.99,0.0,0,0\n' +
+      '2024-01-03,PROD-001,STORE-01,Apparel,68,29.99,0.1,1,0\n' +
+      '2024-01-01,PROD-002,STORE-01,Electronics,18,149.50,0.0,0,0\n' +
+      '2024-01-02,PROD-002,STORE-01,Electronics,22,149.50,0.0,0,0\n' +
+      '2024-01-01,PROD-001,STORE-02,Apparel,38,29.99,0.0,0,0\n';
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', 'retail_sales_template.csv');
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
   };
 
   const confirmDelete = async () => {
@@ -132,11 +139,11 @@ export default function Datasets() {
     <div>
       <PageHeader
         title="Dataset Management & Validation"
-        subtitle="Upload, audit data quality, and inspect schema structure for TFT demand modeling"
+        subtitle="Upload your custom retail sales data, audit data quality, and inspect schema structure for TFT demand modeling"
         actions={
-          <button className="btn-gold" onClick={handleLoadSample} disabled={uploading}>
-            <Sparkles size={16} />
-            <span>Load Sample Dataset</span>
+          <button className="btn-secondary" onClick={downloadCsvTemplate} title="Download standard CSV structure template">
+            <Download size={15} style={{ color: 'var(--primary-wine)' }} />
+            <span>Download CSV Template</span>
           </button>
         }
       />
@@ -160,7 +167,7 @@ export default function Datasets() {
           <div style={{ maxHeight: '280px', overflowY: 'auto' }}>
             {datasets.length === 0 ? (
               <p style={{ color: 'var(--secondary-text)', fontSize: '0.88rem', padding: '1rem 0' }}>
-                No datasets available. Drag & drop a CSV or click "Load Sample Dataset".
+                No datasets available yet. Upload your retail sales CSV file on the left to begin.
               </p>
             ) : (
               datasets.map((d) => (

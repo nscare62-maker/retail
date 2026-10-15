@@ -10,7 +10,8 @@ import {
   ArrowRight,
   Filter,
   Calendar,
-  Layers
+  Layers,
+  UploadCloud
 } from 'lucide-react';
 import {
   ResponsiveContainer,
@@ -193,19 +194,17 @@ export default function Dashboard() {
           title="Retail Demand Intelligence"
           subtitle="Forecast smarter. Stock better. Grow faster."
           actions={
-            <button className="btn-gold" onClick={() => apiService.loadSampleDataset().then(() => loadDashboardData())}>
-              <Sparkles size={16} />
-              <span>Load Sample Dataset</span>
+            <button className="btn-primary" onClick={() => navigate('/datasets')}>
+              <UploadCloud size={16} />
+              <span>Upload Dataset</span>
             </button>
           }
         />
         <EmptyState
           title="Welcome to Retail Demand Intelligence"
-          description="Your forecasting workspace is ready. Load our pre-packaged synthetic retail dataset or upload your own store sales history to begin Temporal Fusion Transformer forecasting."
-          actionLabel="Load Synthetic Retail Dataset"
-          onAction={() => apiService.loadSampleDataset().then(() => loadDashboardData())}
-          secondaryActionLabel="Upload Custom CSV"
-          onSecondaryAction={() => navigate('/datasets')}
+          description="Your forecasting workspace is ready. Upload your store sales history CSV to begin data quality auditing, feature engineering, and Temporal Fusion Transformer demand forecasting."
+          actionLabel="Upload Retail CSV Dataset"
+          onAction={() => navigate('/datasets')}
         />
       </div>
     );
