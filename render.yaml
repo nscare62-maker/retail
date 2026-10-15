@@ -1,0 +1,41 @@
+services:
+  # 1. FastAPI Python ML Backend Web Service
+  - type: web
+    name: retail-demand-backend
+    runtime: python
+    buildCommand: "pip install --no-cache-dir torch torchvision --index-url https://download.pytorch.org/whl/cpu && pip install -r backend/requirements.txt"
+    startCommand: "cd backend && uvicorn app.main:app --host 0.0.0.0 --port $PORT"
+    healthCheckPath: /api/health
+    autoDeploy: true
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.9
+
+  # 2. React + Vite Frontend Static Site
+  - type: web
+    name: retail-demand-frontend
+    runtime: static
+    rootDir: frontend
+    buildCommand: "npm install && npm run build"
+    staticPublishPath: "./dist"
+    autoDeploy: true
+    routes:
+      - type: rewrite
+        source: "/*"
+        destination: "/index.html"
+    envVars:
+      - key: VITE_API_BASE_URL
+        fromService:
+          type: web
+          name: retail-demand-backend
+          property: url
+      - key: VITE_FIREBASE_API_KEY
+        value: AIzaSyB2mfBt_JOpSRmuWx6sHtrf_yFPnO9CyAA
+      - key: VITE_FIREBASE_AUTH_DOMAIN
+        value: wildemo-3ae07.firebaseapp.com
+      - key: VITE_FIREBASE_PROJECT_ID
+        value: wildemo-3ae07
+      - key: VITE_FIREBASE_STORAGE_BUCKET
+        value: wildemo-3ae07.firebasestorage.app
+      - key: VITE_FIREBASE_DATABASE_URL
+        value: https://wildemo-3ae07-default-rtdb.firebaseio.com
